@@ -167,7 +167,7 @@ export function SignIn({
 											name="email"
 											type="email"
 											autoComplete="email"
-											placeholder={localization.auth.emailPlaceholder}
+											placeholder="Email"
 											required
 											disabled={isPending}
 											onChange={() => {

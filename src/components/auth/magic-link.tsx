@@ -152,7 +152,7 @@ export function MagicLink({
 												email: undefined,
 											}));
 										}}
-										placeholder={localization.auth.emailPlaceholder}
+										placeholder="Email"
 										required
 										disabled={isPending}
 										onInvalid={(e) => {

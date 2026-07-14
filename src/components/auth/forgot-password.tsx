@@ -94,7 +94,7 @@ export function ForgotPassword({ className }: ForgotPasswordProps) {
 								name="email"
 								type="email"
 								autoComplete="email"
-								placeholder={localization.auth.emailPlaceholder}
+								placeholder="Email"
 								required
 								disabled={isPending}
 								onChange={() => {

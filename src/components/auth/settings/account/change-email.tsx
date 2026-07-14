@@ -68,7 +68,7 @@ export function ChangeEmail({ className }: ChangeEmailProps) {
 									type="email"
 									autoComplete="email"
 									defaultValue={session?.user.email}
-									placeholder={localization.auth.emailPlaceholder}
+									placeholder="Email"
 									disabled={isPending}
 									required
 									onChange={() => {
