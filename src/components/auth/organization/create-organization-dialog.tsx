@@ -6,7 +6,7 @@ import {
 	useAuthPlugin,
 	useCreateOrganization,
 } from "@better-auth-ui/react";
-import { Briefcase } from "lucide-react";
+import { Briefcase } from "@phosphor-icons/react/dist/ssr";
 import { type SyntheticEvent, useEffect, useState } from "react";
 
 import {

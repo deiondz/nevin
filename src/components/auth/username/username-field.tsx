@@ -7,7 +7,7 @@ import {
 	useIsUsernameAvailable,
 } from "@better-auth-ui/react";
 import { useDebouncer } from "@tanstack/react-pacer";
-import { Check, X } from "lucide-react";
+import { Check, X } from "@phosphor-icons/react/dist/ssr";
 import { useState } from "react";
 import type { AdditionalFieldProps } from "@/components/auth/additional-field";
 import { Field, FieldError } from "@/components/ui/field";

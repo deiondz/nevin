@@ -4,7 +4,7 @@ import {
 	type OrganizationLocalization,
 	type OrganizationPluginOptions,
 } from "@better-auth-ui/core/plugins";
-import { Briefcase } from "lucide-react";
+import { Briefcase } from "@phosphor-icons/react/dist/ssr";
 
 import { OrganizationsSettings } from "@/components/auth/organization/organizations-settings";
 

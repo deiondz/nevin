@@ -2,7 +2,7 @@
 
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
-import { ChevronRight, MoreHorizontal } from "lucide-react";
+import { CaretRight as ChevronRight, DotsThree as MoreHorizontal } from "@phosphor-icons/react/dist/ssr";
 import type * as React from "react";
 import { cn } from "@/lib/utils";
 

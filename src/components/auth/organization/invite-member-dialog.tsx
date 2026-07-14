@@ -6,7 +6,7 @@ import {
 	useAuthPlugin,
 	useInviteMember,
 } from "@better-auth-ui/react";
-import { UserPlus } from "lucide-react";
+import { UserPlus } from "@phosphor-icons/react/dist/ssr";
 import { type SyntheticEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
 

@@ -8,7 +8,7 @@ import {
 	useRequestPasswordReset,
 	useSession,
 } from "@better-auth-ui/react";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeSlash as EyeOff } from "@phosphor-icons/react/dist/ssr";
 import { type SyntheticEvent, useState } from "react";
 import { toast } from "sonner";
 

@@ -6,7 +6,7 @@ import {
 	useAuthPlugin,
 	useCreateApiKey,
 } from "@better-auth-ui/react";
-import { Key } from "lucide-react";
+import { Key } from "@phosphor-icons/react/dist/ssr";
 import { type SyntheticEvent, useState } from "react";
 
 import {

@@ -9,7 +9,11 @@ import {
 	useUnlinkAccount,
 } from "@better-auth-ui/react";
 import type { Account, SocialProvider } from "better-auth";
-import { Link2, Link2Off, Plug } from "lucide-react";
+import {
+	Link as Link2,
+	LinkBreak as Link2Off,
+	Plugs as Plug,
+} from "@phosphor-icons/react/dist/ssr";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";

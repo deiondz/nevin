@@ -1,75 +1,194 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Nevin
 
-## Getting Started
+Nevin is an opinionated default product template for my projects. It is built for auth-first Next.js apps and comes with Better Auth, MongoDB, TanStack Query, Tailwind CSS, coss/shadcn-style UI primitives, Phosphor icons, theme support, and account settings screens already wired.
 
-First, run the development server:
+Use it when you want to start with the boring product plumbing in place: sign in, sign up, passkeys, magic links, social providers, account settings, organization-ready UI pieces, API keys, toasts, query caching, and a database boundary that can be swapped later.
+
+## What Is Included
+
+- Next.js App Router with React 19 and TypeScript.
+- Better Auth server setup at `src/lib/auth.ts`.
+- Auth API route at `src/app/api/auth/[...all]/route.ts`.
+- Auth screens under `src/app/auth/[path]/page.tsx`.
+- Protected settings screens under `src/app/settings/[path]/page.tsx`.
+- Better Auth UI components in `src/components/auth`.
+- MongoDB auth adapter in `src/infrastructure/database/mongo/mongo-auth-database-adapter.ts`.
+- Mongoose database service behind a small application port.
+- Optional legacy Drizzle/Neon helper in `src/lib/db.ts`.
+- TanStack Query provider and devtools in `src/components/providers.tsx`.
+- Theme support through `src/components/theme-provider.tsx`.
+- coss/shadcn-style UI primitives in `src/components/ui`.
+- Biome for linting and formatting.
+- Envin-based environment validation in `env.config.ts`.
+
+## Tech Stack
+
+- Runtime and package manager: Bun 1.3.13
+- Framework: Next.js 16
+- Language: TypeScript
+- UI: Tailwind CSS 4, Base UI, coss/shadcn-style components, Phosphor icons
+- Auth: Better Auth, Better Auth UI, passkeys, magic links, multi-session support
+- Database: MongoDB and Mongoose by default
+- Server state: TanStack Query
+- Validation: Zod and envin
+- Code quality: Biome
+
+## Quick Start
+
+Install dependencies:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
+bun install
+```
+
+Create a local environment file:
+
+```bash
+cp .env.example .env.local
+```
+
+Run the app:
+
+```bash
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`.
 
-## Database Setup
+## Environment
 
-This template keeps database access behind a small application port so the
-persistence adapter can be swapped without changing use-case code.
-
-- MongoDB is wired to Better Auth through `src/composition/auth-database-container.ts`.
-- MongoDB is also available through `src/application/ports/outbound/database-service.ts`.
-- The active MongoDB adapter is wired in `src/composition/database-container.ts`.
-- The Mongoose implementation lives in
-  `src/infrastructure/database/mongo/mongo-database-service.ts`.
-- The legacy Drizzle/Neon helper remains in `src/lib/db.ts`, but it only requires
-  `DATABASE_URL` when that helper is imported.
-
-Add these values to your local environment:
+Required:
 
 ```bash
-MONGODB_URI="mongodb://localhost:27017/default-template"
+MONGODB_URI="mongodb://localhost:27017/nevin"
 MONGODB_MAX_POOL_SIZE="10"
+BETTER_AUTH_SECRET="replace-with-at-least-32-characters"
 ```
 
-Use the composition root from server-only code:
+Optional:
+
+```bash
+BETTER_AUTH_URL="http://localhost:3000"
+DATABASE_URL="postgresql://user:password@host:5432/database"
+SKIP_ENV_VALIDATION="true"
+```
+
+`DATABASE_URL` is only needed if you import `src/lib/db.ts`. The main template path uses MongoDB.
+
+Social login providers are enabled when both client credentials for that provider exist in the environment. For example:
+
+```bash
+GITHUB_CLIENT_ID="..."
+GITHUB_CLIENT_SECRET="..."
+GOOGLE_CLIENT_ID="..."
+GOOGLE_CLIENT_SECRET="..."
+```
+
+Provider-specific options are also supported for GitLab, Microsoft, Paybin, PayPal, Salesforce, Cognito, and TikTok. See `env.config.ts` and `src/lib/auth-social-providers.ts`.
+
+## Scripts
+
+```bash
+bun dev
+bun run build
+bun run start
+bun run lint
+bun run format
+bun run env:validate
+bun run env:preview
+```
+
+`env:validate` checks the environment with `env.config.ts`. `env:preview` starts an envin-backed preview on port `3001`.
+
+## Project Structure
+
+```text
+src/app                         App Router routes
+src/app/api/auth/[...all]        Better Auth API endpoint
+src/app/auth/[path]              Sign in, sign up, reset, and magic-link views
+src/app/settings/[path]          Protected account and security settings
+src/components/auth              Auth and account UI
+src/components/ui                Shared UI primitives
+src/composition                  Server-side composition roots
+src/application/ports            Application-facing interfaces
+src/infrastructure/database      MongoDB implementations
+src/lib                          Auth, query, env-backed helpers
+src/styles/app.css               Tailwind and design tokens
+```
+
+## Auth Model
+
+Better Auth is configured in `src/lib/auth.ts`.
+
+Enabled by default:
+
+- Email and password auth.
+- Magic links. In development, links are logged with `console.info`.
+- Passkeys.
+- Multi-session support.
+- User deletion.
+- Runtime social-provider registration based on environment variables.
+
+The client auth instance lives in `src/lib/auth-client.ts`. The app-level provider is mounted in `src/components/providers.tsx`, where auth UI plugins, TanStack Query, toasts, and navigation are connected.
+
+## Database Model
+
+Nevin uses MongoDB as the default database path.
+
+- Better Auth gets its adapter from `src/composition/auth-database-container.ts`.
+- The adapter implementation is in `src/infrastructure/database/mongo/mongo-auth-database-adapter.ts`.
+- General database access goes through `DatabaseService` in `src/application/ports/outbound/database-service.ts`.
+- The current implementation is `MongoDatabaseService`.
+- `connectDatabase()` is the server-side entry point for application code that needs a database connection.
+
+Example:
 
 ```typescript
-import { connectDatabase } from "@/composition/database-container"
+import { connectDatabase } from "@/composition/database-container";
 
-await connectDatabase()
+await connectDatabase();
 ```
 
-## TanStack Query Setup
+The old Drizzle/Neon helper remains in `src/lib/db.ts` for teams that still need it. It intentionally throws if `DATABASE_URL` is missing.
 
-TanStack Query is configured globally for the App Router:
+## UI System
 
-- `src/lib/query-client.ts` creates a per-request server query client and a
-  stable browser query client.
-- `src/components/providers.tsx` mounts `QueryClientProvider`,
-  `ReactQueryDevtools`, and the auth error toaster.
-- Server components can prefetch with `getQueryClient()` and wrap hydrated
-  client UI in `HydrationBoundary`.
+The UI layer uses Tailwind CSS 4 with generated design tokens in `src/styles/app.css`. Shared primitives live in `src/components/ui` and follow the coss/shadcn component style. Use those primitives first before adding new component libraries.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Rules of thumb:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Keep app-specific components outside `src/components/ui`.
+- Keep shared primitives small and reusable.
+- Use Phosphor icons from `@phosphor-icons/react/dist/ssr` for icon buttons.
+- Put auth-specific UI under `src/components/auth`.
+- Keep server-only code out of client components.
 
-## Learn More
+## Development Notes
 
-To learn more about Next.js, take a look at the following resources:
+- The TypeScript alias `@/*` maps to `src/*`.
+- Biome ignores generated auth schema, UI primitives, SVGs, `.next`, and `node_modules`.
+- Next metadata is set in `src/app/layout.tsx`.
+- The home page currently renders `UserButton` as a small smoke test for auth wiring.
+- Settings pages require a valid session and redirect unauthenticated users to sign in.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Open Source Status
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This repository is prepared to be run as an open-source template, but no license is included yet. Add a `LICENSE` file before publishing it publicly. Until then, assume the code is not licensed for reuse outside the project owner.
 
-## Deploy on Vercel
+Open-source project docs:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- [Contributing](./CONTRIBUTING.md)
+- [Discussions](./DISCUSSIONS.md)
+- [Security](./SECURITY.md)
+- [Code of Conduct](./CODE_OF_CONDUCT.md)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Roadmap
+
+- Add a real landing or dashboard route after the product direction is chosen.
+- Add tests for auth redirects, provider rendering, and database connection behavior.
+- Decide whether Drizzle/Neon should stay as an optional path or be removed.
+- Add a license before public release.
+
+## Maintainer Notes
+
+Keep this template boring on purpose. New features should either support most product apps or live behind clear boundaries. Avoid turning the default template into a demo app with product-specific assumptions.

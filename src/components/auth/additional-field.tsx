@@ -6,7 +6,12 @@ import {
 } from "@better-auth-ui/core";
 import { useAuth } from "@better-auth-ui/react";
 import { format } from "date-fns";
-import { CalendarIcon, Check, ChevronDownIcon, Copy } from "lucide-react";
+import {
+	CalendarBlank as CalendarIcon,
+	Check,
+	CaretDown as ChevronDownIcon,
+	Copy,
+} from "@phosphor-icons/react/dist/ssr";
 import { type ComponentType, useRef, useState } from "react";
 import { toast } from "sonner";
 

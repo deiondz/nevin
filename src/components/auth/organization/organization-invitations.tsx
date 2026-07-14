@@ -8,7 +8,12 @@ import {
 	useHasPermission,
 	useListOrganizationInvitations,
 } from "@better-auth-ui/react";
-import { ChevronUp, Filter, Search, X } from "lucide-react";
+import {
+	CaretUp as ChevronUp,
+	Funnel as Filter,
+	MagnifyingGlass as Search,
+	X,
+} from "@phosphor-icons/react/dist/ssr";
 import { type ComponentProps, type ReactNode, useMemo, useState } from "react";
 
 import { Badge } from "@/components/ui/badge";

@@ -8,12 +8,12 @@ import {
 } from "@better-auth-ui/react";
 import type { User } from "better-auth";
 import {
-	ChevronsUpDown,
-	LogIn,
-	LogOut,
-	Settings,
-	UserPlus2,
-} from "lucide-react";
+	CaretUpDown as ChevronsUpDown,
+	SignIn as LogIn,
+	SignOut as LogOut,
+	Gear as Settings,
+	UserPlus as UserPlus2,
+} from "@phosphor-icons/react/dist/ssr";
 import { isValidElement, type ReactElement, type ReactNode } from "react";
 
 import { buttonVariants } from "@/components/ui/button";

@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth, useAuthPlugin } from "@better-auth-ui/react";
-import { Check, Copy, Key } from "lucide-react";
+import { Check, Copy, Key } from "@phosphor-icons/react/dist/ssr";
 import { useState } from "react";
 import { toast } from "sonner";
 

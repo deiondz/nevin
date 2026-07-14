@@ -5,7 +5,7 @@ import {
 	useAuth,
 	useAuthPlugin,
 } from "@better-auth-ui/react";
-import { Key, X } from "lucide-react";
+import { Key, X } from "@phosphor-icons/react/dist/ssr";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";

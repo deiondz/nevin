@@ -8,7 +8,7 @@ import {
 	useHasPermission,
 } from "@better-auth-ui/react";
 import type { Invitation } from "better-auth/client";
-import { X } from "lucide-react";
+import { X } from "@phosphor-icons/react/dist/ssr";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

@@ -1,11 +1,5 @@
 import { Toaster as Sonner, type ToasterProps } from "sonner";
-import {
-	CircleCheckIcon,
-	InfoIcon,
-	TriangleAlertIcon,
-	OctagonXIcon,
-	Loader2Icon,
-} from "lucide-react";
+import { CheckCircle as CircleCheckIcon, Info as InfoIcon, Warning as TriangleAlertIcon, WarningOctagon as OctagonXIcon, Spinner as Loader2Icon } from "@phosphor-icons/react/dist/ssr";
 import { useTheme } from "@/components/theme-provider";
 
 const Toaster = ({ ...props }: ToasterProps) => {

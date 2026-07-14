@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth, useAuthPlugin, useSession } from "@better-auth-ui/react";
-import { ArrowLeftRight } from "lucide-react";
+import { ArrowsLeftRight as ArrowLeftRight } from "@phosphor-icons/react/dist/ssr";
 
 import {
 	DropdownMenuSub,

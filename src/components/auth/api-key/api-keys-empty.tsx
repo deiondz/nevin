@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuthPlugin } from "@better-auth-ui/react";
-import { Key } from "lucide-react";
+import { Key } from "@phosphor-icons/react/dist/ssr";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";

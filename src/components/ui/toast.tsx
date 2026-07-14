@@ -1,13 +1,7 @@
 "use client";
 
 import { Toast } from "@base-ui/react/toast";
-import {
-  CircleAlertIcon,
-  CircleCheckIcon,
-  InfoIcon,
-  LoaderCircleIcon,
-  TriangleAlertIcon,
-} from "lucide-react";
+import { WarningCircle as CircleAlertIcon, CheckCircle as CircleCheckIcon, Info as InfoIcon, Spinner as LoaderCircleIcon, Warning as TriangleAlertIcon } from "@phosphor-icons/react/dist/ssr";
 import type React from "react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";

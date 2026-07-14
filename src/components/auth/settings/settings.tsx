@@ -2,7 +2,7 @@
 
 import type { SettingsView } from "@better-auth-ui/core";
 import { useAuth, useAuthenticate } from "@better-auth-ui/react";
-import { Shield, User2 } from "lucide-react";
+import { Shield, User as User2 } from "@phosphor-icons/react/dist/ssr";
 import { useMemo } from "react";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";

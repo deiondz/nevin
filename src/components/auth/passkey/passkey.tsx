@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth, useAuthPlugin } from "@better-auth-ui/react";
-import { Fingerprint, X } from "lucide-react";
+import { Fingerprint, X } from "@phosphor-icons/react/dist/ssr";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";

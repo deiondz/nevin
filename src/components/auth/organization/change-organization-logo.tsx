@@ -8,7 +8,10 @@ import {
 	useAuthPlugin,
 	useUpdateOrganization,
 } from "@better-auth-ui/react";
-import { Trash2, Upload } from "lucide-react";
+import {
+	Trash as Trash2,
+	UploadSimple as Upload,
+} from "@phosphor-icons/react/dist/ssr";
 import { type ChangeEvent, useRef, useState } from "react";
 import { toast } from "sonner";
 

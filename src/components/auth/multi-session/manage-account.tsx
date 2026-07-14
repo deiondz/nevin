@@ -9,7 +9,11 @@ import {
 	useSession,
 	useSetActiveSession,
 } from "@better-auth-ui/react";
-import { ArrowLeftRight, LogOut, MoreHorizontal } from "lucide-react";
+import {
+	ArrowsLeftRight as ArrowLeftRight,
+	SignOut as LogOut,
+	DotsThree as MoreHorizontal,
+} from "@phosphor-icons/react/dist/ssr";
 import { toast } from "sonner";
 import { UserView } from "@/components/auth/user/user-view";
 import { Button, buttonVariants } from "@/components/ui/button";

@@ -2,7 +2,7 @@
 
 import { getEmailProviderLink } from "@better-auth-ui/core";
 import { useAuth } from "@better-auth-ui/react";
-import { SquareArrowOutUpRight } from "lucide-react";
+import { ArrowSquareOut as SquareArrowOutUpRight } from "@phosphor-icons/react/dist/ssr";
 
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";

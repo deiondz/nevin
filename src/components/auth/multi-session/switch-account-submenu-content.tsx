@@ -7,7 +7,10 @@ import {
 	useListDeviceSessions,
 	useSession,
 } from "@better-auth-ui/react";
-import { Check, CirclePlus } from "lucide-react";
+import {
+	Check,
+	PlusCircle as CirclePlus,
+} from "@phosphor-icons/react/dist/ssr";
 import { UserView } from "@/components/auth/user/user-view";
 import {
 	DropdownMenuItem,

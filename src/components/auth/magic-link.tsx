@@ -112,7 +112,7 @@ export function MagicLink({
 						{localization.auth.signIn}
 					</CardTitle>
 
-					<CardDescription className="max-w-[21rem] text-balance text-base leading-6">
+					<CardDescription className="max-w-84 text-balance text-base leading-6">
 						Enter your email and we&apos;ll send you a secure sign-in link.
 					</CardDescription>
 				</CardHeader>

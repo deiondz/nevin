@@ -10,7 +10,13 @@ import {
 	useSignUpEmail,
 } from "@better-auth-ui/react";
 import { useIsMutating } from "@tanstack/react-query";
-import { Eye, EyeOff, LockKeyhole, ShieldCheck, UserRound } from "lucide-react";
+import {
+	Eye,
+	EyeSlash as EyeOff,
+	LockKey as LockKeyhole,
+	ShieldCheck,
+	UserCircle as UserRound,
+} from "@phosphor-icons/react/dist/ssr";
 import { type SyntheticEvent, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -183,7 +189,7 @@ export function SignUp({ className, socialLayout }: SignUpProps) {
 				className,
 			)}
 		>
-			<section className="flex flex-col justify-center p-6 pb-4 md:w-1/2 md:p-8">
+			<section className="flex flex-col justify-center items-start p-6 pb-4 md:w-1/2 md:p-8">
 				<Logo className="mb-6 h-9" />
 
 				<h1 className="mb-4 max-w-md text-2xl font-semibold leading-tight tracking-normal md:text-3xl">

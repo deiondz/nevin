@@ -6,7 +6,7 @@ import {
 	useAuthPlugin,
 	useDeletePasskey,
 } from "@better-auth-ui/react";
-import { Fingerprint } from "lucide-react";
+import { Fingerprint } from "@phosphor-icons/react/dist/ssr";
 
 import {
 	AlertDialog,

@@ -7,7 +7,7 @@ import {
 	useAuthPlugin,
 	useDeleteApiKey,
 } from "@better-auth-ui/react";
-import { Key } from "lucide-react";
+import { Key } from "@phosphor-icons/react/dist/ssr";
 
 import {
 	AlertDialog,

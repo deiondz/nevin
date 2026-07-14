@@ -4,11 +4,7 @@ import { mergeProps } from "@base-ui/react/merge-props";
 import { Select as SelectPrimitive } from "@base-ui/react/select";
 import { useRender } from "@base-ui/react/use-render";
 import { cva, type VariantProps } from "class-variance-authority";
-import {
-  ChevronDownIcon,
-  ChevronsUpDownIcon,
-  ChevronUpIcon,
-} from "lucide-react";
+import { CaretDown as ChevronDownIcon, CaretUpDown as ChevronsUpDownIcon, CaretUp as ChevronUpIcon } from "@phosphor-icons/react/dist/ssr";
 import type * as React from "react";
 import { cn } from "@/lib/utils";
 

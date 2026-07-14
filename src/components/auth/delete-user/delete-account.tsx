@@ -8,7 +8,7 @@ import {
 	useListAccounts,
 } from "@better-auth-ui/react";
 import { useQueryClient } from "@tanstack/react-query";
-import { TriangleAlert } from "lucide-react";
+import { Warning as TriangleAlert } from "@phosphor-icons/react/dist/ssr";
 import { type SyntheticEvent, useState } from "react";
 import { toast } from "sonner";
 import {

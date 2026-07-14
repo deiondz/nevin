@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuthPlugin } from "@better-auth-ui/react";
-import { Send } from "lucide-react";
+import { PaperPlaneTilt as Send } from "@phosphor-icons/react/dist/ssr";
 
 import { organizationPlugin } from "@/lib/auth/organization-plugin";
 

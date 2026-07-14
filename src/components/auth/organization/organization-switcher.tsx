@@ -11,10 +11,10 @@ import {
 } from "@better-auth-ui/react";
 import type { Organization } from "better-auth/client";
 import {
-	ChevronsUpDown,
+	CaretUpDown as ChevronsUpDown,
 	PlusCircle,
-	Settings as SettingsIcon,
-} from "lucide-react";
+	Gear as SettingsIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { type ComponentProps, type ReactElement, useState } from "react";
 
 import { buttonVariants } from "@/components/ui/button";

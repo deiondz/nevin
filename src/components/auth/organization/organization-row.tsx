@@ -7,7 +7,7 @@ import {
 	useSetActiveOrganization,
 } from "@better-auth-ui/react";
 import type { Organization } from "better-auth/client";
-import { Settings as SettingsIcon } from "lucide-react";
+import { Gear as SettingsIcon } from "@phosphor-icons/react/dist/ssr";
 
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";

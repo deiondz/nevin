@@ -8,7 +8,7 @@ import {
 	useSignInPasskey,
 } from "@better-auth-ui/react";
 import { useIsMutating } from "@tanstack/react-query";
-import { Fingerprint } from "lucide-react";
+import { Fingerprint } from "@phosphor-icons/react/dist/ssr";
 
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";

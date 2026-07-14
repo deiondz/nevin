@@ -1,4 +1,4 @@
-import { Loader2Icon } from "lucide-react";
+import { Spinner as Loader2Icon } from "@phosphor-icons/react/dist/ssr";
 import type React from "react";
 import { cn } from "@/lib/utils";
 

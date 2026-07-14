@@ -8,7 +8,10 @@ import {
 	useAuthenticate,
 	useAuthPlugin,
 } from "@better-auth-ui/react";
-import { Settings as SettingsIcon, User2 as UserIcon } from "lucide-react";
+import {
+	Gear as SettingsIcon,
+	User as UserIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { useEffect, useMemo } from "react";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";

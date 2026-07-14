@@ -3,7 +3,7 @@
 import { type AuthView, authMutationKeys } from "@better-auth-ui/core";
 import { useAuth, useAuthPlugin } from "@better-auth-ui/react";
 import { useIsMutating } from "@tanstack/react-query";
-import { Lock, Mail } from "lucide-react";
+import { Lock, Envelope as Mail } from "@phosphor-icons/react/dist/ssr";
 
 import { buttonVariants } from "@/components/ui/button";
 import { magicLinkPlugin } from "@/lib/auth/magic-link-plugin";
