@@ -34,13 +34,11 @@ type ThemeProviderProps = {
 };
 
 const MEDIA_QUERY = "(prefers-color-scheme: dark)";
+const DEFAULT_STORAGE_KEY = "theme";
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
 function getSystemTheme(): ResolvedTheme {
-	if (
-		typeof window !== "undefined" &&
-		window.matchMedia(MEDIA_QUERY).matches
-	) {
+	if (typeof window !== "undefined" && window.matchMedia(MEDIA_QUERY).matches) {
 		return "dark";
 	}
 
@@ -60,9 +58,7 @@ function getStoredTheme(storageKey: string, fallback: Theme): Theme {
 function disableTransitionsTemporarily() {
 	const style = document.createElement("style");
 	style.appendChild(
-		document.createTextNode(
-			"*,*::before,*::after{transition:none!important}",
-		),
+		document.createTextNode("*,*::before,*::after{transition:none!important}"),
 	);
 	document.head.appendChild(style);
 	window.getComputedStyle(document.body);
@@ -72,10 +68,10 @@ function disableTransitionsTemporarily() {
 export function ThemeProvider({
 	attribute = "class",
 	children,
-	defaultTheme = "system",
+	defaultTheme = "light",
 	disableTransitionOnChange = false,
 	enableSystem = true,
-	storageKey = "theme",
+	storageKey = DEFAULT_STORAGE_KEY,
 	themes = ["light", "dark"],
 }: ThemeProviderProps) {
 	const [theme, setThemeState] = useState<Theme>(() =>
@@ -90,14 +86,15 @@ export function ThemeProvider({
 		[enableSystem, themes],
 	);
 
-	const resolvedTheme = theme === "system" && enableSystem ? systemTheme : theme;
+	const resolvedTheme =
+		theme === "system" && enableSystem ? systemTheme : theme;
 
 	const applyTheme = useCallback(
-		(nextTheme: Theme) => {
+		(nextTheme: Theme, nextSystemTheme = getSystemTheme()) => {
 			if (typeof document === "undefined") return;
 
 			const nextResolved =
-				nextTheme === "system" && enableSystem ? getSystemTheme() : nextTheme;
+				nextTheme === "system" && enableSystem ? nextSystemTheme : nextTheme;
 			const root = document.documentElement;
 
 			if (disableTransitionOnChange) {
@@ -143,7 +140,7 @@ export function ThemeProvider({
 	}, []);
 
 	useEffect(() => {
-		applyTheme(theme);
+		applyTheme(theme, systemTheme);
 	}, [applyTheme, theme, systemTheme]);
 
 	useEffect(() => {
@@ -170,6 +167,21 @@ export function ThemeProvider({
 
 	return (
 		<ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+	);
+}
+
+export function ThemeScript({
+	attribute = "class",
+	defaultTheme = "light",
+	enableSystem = true,
+	storageKey = DEFAULT_STORAGE_KEY,
+	themes = ["light", "dark"],
+}: Omit<ThemeProviderProps, "children" | "disableTransitionOnChange">) {
+	const code = `(function(){try{var e=${JSON.stringify(storageKey)},t=${JSON.stringify(defaultTheme)},r=${JSON.stringify(enableSystem)},a=${JSON.stringify(attribute)},m=${JSON.stringify(MEDIA_QUERY)},s=${JSON.stringify(themes)},n=localStorage.getItem(e)||t,o=n==="system"&&r?window.matchMedia(m).matches?"dark":"light":n,d=document.documentElement;if(a==="class"){d.classList.remove.apply(d.classList,s.concat("system"));d.classList.add(o)}else d.setAttribute(a,o);if(o==="dark"||o==="light")d.style.colorScheme=o}catch(e){}})();`;
+
+	return (
+		// biome-ignore lint/security/noDangerouslySetInnerHtml: The theme class must be set before hydration to prevent a visible reload flash.
+		<script dangerouslySetInnerHTML={{ __html: code }} />
 	);
 }
 

@@ -10,9 +10,16 @@ import {
 import { useIsMutating } from "@tanstack/react-query";
 import { type SyntheticEvent, useState } from "react";
 import { toast } from "sonner";
-
+import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 import {
 	Field,
 	FieldDescription,
@@ -91,111 +98,142 @@ export function MagicLink({
 	const showSeparator = socialProviders && socialProviders.length > 0;
 
 	return (
-		<Card className={cn("w-full max-w-sm", className)}>
-			<CardHeader>
-				<CardTitle className="text-xl">{localization.auth.signIn}</CardTitle>
-			</CardHeader>
+		<div
+			className={cn(
+				"flex h-full w-full flex-col md:h-auto md:max-w-[440px] md:px-4 md:py-6",
+				className,
+			)}
+		>
+			<Card className="min-h-full overflow-hidden rounded-none border-x-0 border-y-0 pb-0 shadow-none md:min-h-0 md:rounded-2xl md:border md:shadow-xs/5">
+				<CardHeader className="justify-items-center gap-2 px-6 pb-5 pt-10 text-center md:pt-9">
+					<Logo className="mb-5 h-9" />
 
-			<CardContent>
-				<div className="flex flex-col gap-6">
-					{socialPosition === "top" && (
-						<>
-							{socialProviders && socialProviders.length > 0 && (
-								<ProviderButtons socialLayout={socialLayout} />
-							)}
+					<CardTitle className="text-[2rem] font-semibold leading-none tracking-normal md:text-[2.125rem]">
+						{localization.auth.signIn}
+					</CardTitle>
 
-							{showSeparator && (
-								<FieldSeparator className="*:data-[slot=field-separator-content]:bg-card m-0 text-xs flex items-center">
-									{localization.auth.or}
-								</FieldSeparator>
-							)}
-						</>
-					)}
+					<CardDescription className="max-w-[21rem] text-balance text-base leading-6">
+						Enter your email and we&apos;ll send you a secure sign-in link.
+					</CardDescription>
+				</CardHeader>
 
-					<form onSubmit={handleSubmit}>
-						<FieldGroup>
-							<Field data-invalid={!!fieldErrors.email}>
-								<Label htmlFor="email">{localization.auth.email}</Label>
-
-								<Input
-									id="email"
-									name="email"
-									type="email"
-									autoComplete="email"
-									value={email}
-									onChange={(e) => {
-										setEmail(e.target.value);
-
-										setFieldErrors((prev) => ({
-											...prev,
-											email: undefined,
-										}));
-									}}
-									placeholder={localization.auth.emailPlaceholder}
-									required
-									disabled={isPending}
-									onInvalid={(e) => {
-										e.preventDefault();
-
-										setFieldErrors((prev) => ({
-											...prev,
-											email: (e.target as HTMLInputElement).validationMessage,
-										}));
-									}}
-									aria-invalid={!!fieldErrors.email}
-								/>
-
-								<FieldError>{fieldErrors.email}</FieldError>
-							</Field>
-
-							<div className="flex flex-col gap-3">
-								<Button type="submit" disabled={isPending}>
-									{signInMagicLinkPending && <Spinner />}
-
-									{magicLinkLocalization.sendMagicLink}
-								</Button>
-
-								{plugins.flatMap((plugin) =>
-									(plugin.authButtons ?? []).map((AuthButton, index) => (
-										<AuthButton
-											key={`${plugin.id}-${index.toString()}`}
-											view="magicLink"
-										/>
-									)),
+				<CardContent className="px-6 pb-6 pt-0 md:px-7">
+					<div className="flex flex-col gap-5">
+						{socialPosition === "top" && (
+							<>
+								{socialProviders && socialProviders.length > 0 && (
+									<ProviderButtons socialLayout={socialLayout ?? "grid"} />
 								)}
-							</div>
-						</FieldGroup>
-					</form>
 
-					{socialPosition === "bottom" && (
-						<>
-							{showSeparator && (
-								<FieldSeparator className="*:data-[slot=field-separator-content]:bg-card text-xs flex items-center">
-									{localization.auth.or}
-								</FieldSeparator>
-							)}
+								{showSeparator && (
+									<FieldSeparator className="*:data-[slot=field-separator-content]:bg-card my-1 text-xs uppercase">
+										{localization.auth.or}
+									</FieldSeparator>
+								)}
+							</>
+						)}
 
-							{socialProviders && socialProviders.length > 0 && (
-								<ProviderButtons socialLayout={socialLayout} />
-							)}
-						</>
-					)}
-				</div>
+						<form onSubmit={handleSubmit}>
+							<FieldGroup className="gap-4">
+								<Field data-invalid={!!fieldErrors.email}>
+									<Label htmlFor="email">{localization.auth.email}</Label>
+
+									<Input
+										id="email"
+										name="email"
+										type="email"
+										autoComplete="email"
+										value={email}
+										onChange={(e) => {
+											setEmail(e.target.value);
+
+											setFieldErrors((prev) => ({
+												...prev,
+												email: undefined,
+											}));
+										}}
+										placeholder={localization.auth.emailPlaceholder}
+										required
+										disabled={isPending}
+										onInvalid={(e) => {
+											e.preventDefault();
+
+											setFieldErrors((prev) => ({
+												...prev,
+												email: (e.target as HTMLInputElement).validationMessage,
+											}));
+										}}
+										aria-invalid={!!fieldErrors.email}
+									/>
+
+									<FieldError>{fieldErrors.email}</FieldError>
+								</Field>
+
+								<div className="flex flex-col gap-3 pt-1">
+									<Button
+										type="submit"
+										disabled={isPending}
+										className="h-10 w-full active:scale-[0.985]"
+									>
+										{signInMagicLinkPending && <Spinner />}
+
+										{magicLinkLocalization.sendMagicLink}
+									</Button>
+
+									{plugins.flatMap((plugin) =>
+										(plugin.authButtons ?? []).map((AuthButton, index) => (
+											<AuthButton
+												key={`${plugin.id}-${index.toString()}`}
+												view="magicLink"
+											/>
+										)),
+									)}
+								</div>
+							</FieldGroup>
+						</form>
+
+						{socialPosition === "bottom" && (
+							<>
+								{showSeparator && (
+									<FieldSeparator className="*:data-[slot=field-separator-content]:bg-card my-1 text-xs uppercase">
+										{localization.auth.or}
+									</FieldSeparator>
+								)}
+
+								{socialProviders && socialProviders.length > 0 && (
+									<ProviderButtons socialLayout={socialLayout ?? "grid"} />
+								)}
+							</>
+						)}
+					</div>
+				</CardContent>
 
 				{emailAndPassword?.enabled && (
-					<div className="flex flex-col gap-3 items-center w-full mt-4">
-						<FieldDescription className="text-center">
+					<CardFooter className="mt-auto justify-center rounded-none border-t px-6 py-6 md:rounded-b-2xl md:bg-muted/72">
+						<FieldDescription className="text-center text-base leading-6 md:text-sm">
 							{localization.auth.needToCreateAnAccount}{" "}
 							<Link
 								href={`${basePaths.auth}/${viewPaths.auth.signUp}`}
-								className="underline underline-offset-4"
+								className="font-medium text-foreground underline underline-offset-4"
 							>
 								{localization.auth.signUp}
 							</Link>
 						</FieldDescription>
-					</div>
+					</CardFooter>
 				)}
-			</CardContent>
-		</Card>
+			</Card>
+
+			<div className="hidden w-full flex-col gap-y-4 px-px py-6 text-center text-muted-foreground text-sm md:flex md:flex-row md:justify-between">
+				<div>© 2026</div>
+				<div className="space-x-4">
+					<a className="underline underline-offset-4" href="/terms">
+						Terms
+					</a>
+					<a className="underline underline-offset-4" href="/privacy">
+						Privacy
+					</a>
+				</div>
+			</div>
+		</div>
 	);
 }

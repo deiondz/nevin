@@ -4,9 +4,8 @@ import type { ReactNode } from "react";
 
 import "@/styles/app.css";
 
-import { Header } from "@/components/header";
 import { Providers } from "@/components/providers";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider, ThemeScript } from "@/components/theme-provider";
 import { getEnabledSocialProviderIds } from "@/lib/auth-social-providers";
 import { cn } from "@/lib/utils";
 
@@ -33,10 +32,13 @@ export default function RootLayout({
 			suppressHydrationWarning
 			className={cn("font-sans", geist.variable)}
 		>
+			<head>
+				<ThemeScript />
+			</head>
 			<body className="antialiased min-h-svh flex flex-col">
 				<ThemeProvider
 					attribute="class"
-					defaultTheme="system"
+					defaultTheme="light"
 					enableSystem
 					disableTransitionOnChange
 				>

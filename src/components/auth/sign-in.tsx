@@ -8,7 +8,7 @@ import {
 } from "@better-auth-ui/react";
 import { useIsMutating } from "@tanstack/react-query";
 import { type SyntheticEvent, useState } from "react";
-
+import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -29,7 +29,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
-import { Logo } from "@/components/logo";
 import { cn } from "@/lib/utils";
 import { ProviderButtons, type SocialLayout } from "./provider-buttons";
 
@@ -168,7 +167,7 @@ export function SignIn({
 											name="email"
 											type="email"
 											autoComplete="email"
-											placeholder="Email"
+											placeholder={localization.auth.emailPlaceholder}
 											required
 											disabled={isPending}
 											onChange={() => {
