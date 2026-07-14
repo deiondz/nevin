@@ -2,6 +2,7 @@
 
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import type { SocialProvider } from "better-auth/social-providers";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
@@ -12,7 +13,13 @@ import { AuthProvider } from "./auth/auth-provider";
 import { ErrorToaster } from "./auth/error-toaster";
 import { Toaster } from "./ui/sonner";
 
-export function Providers({ children }: { children: ReactNode }) {
+export function Providers({
+	children,
+	socialProviders,
+}: {
+	children: ReactNode;
+	socialProviders: SocialProvider[];
+}) {
 	const router = useRouter();
 	const queryClient = getQueryClient();
 
@@ -21,7 +28,7 @@ export function Providers({ children }: { children: ReactNode }) {
 			<AuthProvider
 				authClient={authClient}
 				redirectTo="/settings/account"
-				socialProviders={["google", "github"]}
+				socialProviders={socialProviders}
 				navigate={({ to, replace }) =>
 					replace ? router.replace(to) : router.push(to)
 				}

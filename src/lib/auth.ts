@@ -3,9 +3,11 @@ import { multiSession } from "better-auth/plugins";
 
 import env from "../../env.config";
 import { getAuthDatabaseAdapter } from "../composition/auth-database-container";
+import { getSocialProviders } from "./auth-social-providers";
 
 export const auth = betterAuth({
 	database: getAuthDatabaseAdapter(),
+	...(env.BETTER_AUTH_URL ? { baseURL: env.BETTER_AUTH_URL } : {}),
 	emailAndPassword: {
 		enabled: true,
 	},
@@ -16,14 +18,5 @@ export const auth = betterAuth({
 			enabled: true,
 		},
 	},
-	socialProviders: {
-		github: {
-			clientId: env.GITHUB_CLIENT_ID,
-			clientSecret: env.GITHUB_CLIENT_SECRET,
-		},
-		google: {
-			clientId: env.GOOGLE_CLIENT_ID,
-			clientSecret: env.GOOGLE_CLIENT_SECRET,
-		},
-	},
+	socialProviders: getSocialProviders(),
 });

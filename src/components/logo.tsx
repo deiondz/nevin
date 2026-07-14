@@ -1,22 +1,18 @@
-import type { ComponentPropsWithRef } from "react";
+import Image, { type ImageProps } from "next/image";
 
-export function Logo(props: ComponentPropsWithRef<"svg">) {
+type LogoProps = Omit<ImageProps, "src" | "width" | "height" | "alt"> & {
+	alt?: string;
+};
+
+export function Logo({ alt = "Logo", className, ...props }: LogoProps) {
 	return (
-		<svg
-			className="size-5"
-			fill="none"
-			viewBox="0 0 60 45"
-			xmlns="http://www.w3.org/2000/svg"
-			aria-label="Better Auth UI"
-			role="img"
+		<Image
+			src="/logo.svg"
+			alt={alt}
+			width={55}
+			height={40}
+			className={className ? `h-5 w-auto ${className}` : "h-5 w-auto"}
 			{...props}
-		>
-			<path
-				fill="currentColor"
-				clipRule="evenodd"
-				d="M0 0H15V45H0V0ZM45 0H60V45H45V0ZM20 0H40V15H20V0ZM20 30H40V45H20V30Z"
-				fillRule="evenodd"
-			/>
-		</svg>
+		/>
 	);
 }
