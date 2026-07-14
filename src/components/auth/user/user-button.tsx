@@ -6,7 +6,6 @@ import {
 	useSession,
 	useSetActiveSession,
 } from "@better-auth-ui/react";
-import type { User } from "better-auth";
 import {
 	CaretUpDown as ChevronsUpDown,
 	SignIn as LogIn,
@@ -14,6 +13,7 @@ import {
 	Gear as Settings,
 	UserPlus as UserPlus2,
 } from "@phosphor-icons/react/dist/ssr";
+import type { User } from "better-auth";
 import { isValidElement, type ReactElement, type ReactNode } from "react";
 
 import { buttonVariants } from "@/components/ui/button";

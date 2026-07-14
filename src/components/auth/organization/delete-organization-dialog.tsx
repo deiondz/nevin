@@ -6,8 +6,8 @@ import {
 	useAuthPlugin,
 	useDeleteOrganization,
 } from "@better-auth-ui/react";
-import type { Organization } from "better-auth/client";
 import { Warning as TriangleAlert } from "@phosphor-icons/react/dist/ssr";
+import type { Organization } from "better-auth/client";
 import type { SyntheticEvent } from "react";
 import { toast } from "sonner";
 

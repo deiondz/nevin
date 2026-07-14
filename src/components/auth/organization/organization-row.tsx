@@ -6,8 +6,8 @@ import {
 	useAuthPlugin,
 	useSetActiveOrganization,
 } from "@better-auth-ui/react";
-import type { Organization } from "better-auth/client";
 import { Gear as SettingsIcon } from "@phosphor-icons/react/dist/ssr";
+import type { Organization } from "better-auth/client";
 
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";

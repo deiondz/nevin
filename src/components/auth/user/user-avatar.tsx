@@ -5,8 +5,8 @@ import {
 	useAuth,
 	useSession,
 } from "@better-auth-ui/react";
-import type { User } from "better-auth";
 import { User as User2 } from "@phosphor-icons/react/dist/ssr";
+import type { User } from "better-auth";
 import type { ReactNode } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";

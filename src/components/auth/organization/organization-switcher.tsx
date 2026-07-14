@@ -9,12 +9,12 @@ import {
 	useSession,
 	useSetActiveOrganization,
 } from "@better-auth-ui/react";
-import type { Organization } from "better-auth/client";
 import {
 	CaretUpDown as ChevronsUpDown,
 	PlusCircle,
 	Gear as SettingsIcon,
 } from "@phosphor-icons/react/dist/ssr";
+import type { Organization } from "better-auth/client";
 import { type ComponentProps, type ReactElement, useState } from "react";
 
 import { buttonVariants } from "@/components/ui/button";

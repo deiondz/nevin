@@ -7,8 +7,8 @@ import {
 	useCancelInvitation,
 	useHasPermission,
 } from "@better-auth-ui/react";
-import type { Invitation } from "better-auth/client";
 import { X } from "@phosphor-icons/react/dist/ssr";
+import type { Invitation } from "better-auth/client";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

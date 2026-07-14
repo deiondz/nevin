@@ -9,13 +9,13 @@ import {
 	useListOrganizationMembers,
 	useSession,
 } from "@better-auth-ui/react";
-import type { Member } from "better-auth/client";
 import {
 	CaretUp as ChevronUp,
 	Funnel as Filter,
 	MagnifyingGlass as Search,
 	X,
 } from "@phosphor-icons/react/dist/ssr";
+import type { Member } from "better-auth/client";
 import { type ComponentProps, type ReactNode, useMemo, useState } from "react";
 
 import { Badge } from "@/components/ui/badge";

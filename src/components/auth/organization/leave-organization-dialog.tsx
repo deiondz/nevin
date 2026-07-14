@@ -6,8 +6,8 @@ import {
 	useAuthPlugin,
 	useLeaveOrganization,
 } from "@better-auth-ui/react";
-import type { Organization } from "better-auth/client";
 import { SignOut as LogOut } from "@phosphor-icons/react/dist/ssr";
+import type { Organization } from "better-auth/client";
 import { toast } from "sonner";
 
 import {

@@ -1,7 +1,7 @@
 "use client";
 
-import type { Organization } from "better-auth/client";
 import { Briefcase } from "@phosphor-icons/react/dist/ssr";
+import type { Organization } from "better-auth/client";
 import type { ComponentProps, CSSProperties, ReactNode } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";

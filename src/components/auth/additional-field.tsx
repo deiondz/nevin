@@ -5,13 +5,13 @@ import {
 	resolveInputType,
 } from "@better-auth-ui/core";
 import { useAuth } from "@better-auth-ui/react";
-import { format } from "date-fns";
 import {
 	CalendarBlank as CalendarIcon,
 	Check,
 	CaretDown as ChevronDownIcon,
 	Copy,
 } from "@phosphor-icons/react/dist/ssr";
+import { format } from "date-fns";
 import { type ComponentType, useRef, useState } from "react";
 import { toast } from "sonner";
 

@@ -6,8 +6,8 @@ import {
 	useAuthPlugin,
 	useCheckSlug,
 } from "@better-auth-ui/react";
-import { useDebouncer } from "@tanstack/react-pacer";
 import { Check, X } from "@phosphor-icons/react/dist/ssr";
+import { useDebouncer } from "@tanstack/react-pacer";
 import { useEffect, useState } from "react";
 
 import { Field, FieldError } from "@/components/ui/field";

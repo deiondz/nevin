@@ -9,7 +9,6 @@ import {
 	useFetchOptions,
 	useSignUpEmail,
 } from "@better-auth-ui/react";
-import { useIsMutating } from "@tanstack/react-query";
 import {
 	Eye,
 	EyeSlash as EyeOff,
@@ -17,8 +16,10 @@ import {
 	ShieldCheck,
 	UserCircle as UserRound,
 } from "@phosphor-icons/react/dist/ssr";
+import { useIsMutating } from "@tanstack/react-query";
 import { type SyntheticEvent, useState } from "react";
 import { toast } from "sonner";
+import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import {
 	Field,
@@ -36,7 +37,6 @@ import {
 } from "@/components/ui/input-group";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
-import { Logo } from "@/components/logo";
 import { cn } from "@/lib/utils";
 import { AdditionalField } from "./additional-field";
 import { ProviderButtons, type SocialLayout } from "./provider-buttons";

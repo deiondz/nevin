@@ -1,14 +1,14 @@
 "use client";
 
 import { useAuth, useRevokeSession, useSession } from "@better-auth-ui/react";
-import type { Session } from "better-auth";
-import Bowser from "bowser";
 import {
 	SignOut as LogOut,
 	Monitor,
 	DeviceMobile as Smartphone,
 	X,
 } from "@phosphor-icons/react/dist/ssr";
+import type { Session } from "better-auth";
+import Bowser from "bowser";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";

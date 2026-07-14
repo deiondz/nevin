@@ -6,8 +6,8 @@ import {
 	useAuthPlugin,
 	useRemoveMember,
 } from "@better-auth-ui/react";
-import type { Member, User } from "better-auth/client";
 import { Trash as Trash2 } from "@phosphor-icons/react/dist/ssr";
+import type { Member, User } from "better-auth/client";
 import { toast } from "sonner";
 
 import {

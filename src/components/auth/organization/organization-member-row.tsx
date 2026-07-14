@@ -8,12 +8,12 @@ import {
 	useSession,
 	useUpdateMemberRole,
 } from "@better-auth-ui/react";
-import type { Member, Organization, User } from "better-auth/client";
 import {
 	SignOut as LogOut,
 	Pencil,
 	Trash as Trash2,
 } from "@phosphor-icons/react/dist/ssr";
+import type { Member, Organization, User } from "better-auth/client";
 import { useState } from "react";
 import { toast } from "sonner";
 
