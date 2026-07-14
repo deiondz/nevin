@@ -12,7 +12,9 @@ export async function Header() {
 	const requestHeaders = await headers();
 	const queryClient = getQueryClient();
 
-	await ensureSession(queryClient, auth, { headers: requestHeaders });
+	const session = await ensureSession(queryClient, auth, {
+		headers: requestHeaders,
+	});
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
@@ -24,7 +26,7 @@ export async function Header() {
 						<h1 className="text-base">BETTER-AUTH. UI</h1>
 					</Link>
 
-					<UserButton size="icon" />
+					<UserButton size="icon" initialSession={session} />
 				</div>
 			</header>
 		</HydrationBoundary>

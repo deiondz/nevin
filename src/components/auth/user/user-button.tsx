@@ -6,6 +6,7 @@ import {
 	useSession,
 	useSetActiveSession,
 } from "@better-auth-ui/react";
+import type { User } from "better-auth";
 import {
 	ChevronsUpDown,
 	LogIn,
@@ -68,6 +69,9 @@ export type UserButtonProps = {
 	links?: (UserButtonLink | ReactElement)[];
 	/** Hide the built-in "Settings" link. Useful when replacing it via `links`. */
 	hideSettings?: boolean;
+	initialSession?: {
+		user: User & { username?: string | null; displayUsername?: string | null };
+	} | null;
 };
 
 function renderUserLink(
@@ -113,6 +117,7 @@ export function UserButton({
 	variant = "ghost",
 	links,
 	hideSettings = false,
+	initialSession,
 }: UserButtonProps) {
 	const { authClient, basePaths, viewPaths, localization, plugins, navigate } =
 		useAuth();
@@ -120,7 +125,11 @@ export function UserButton({
 	const { isPending: settingActiveSession } = useSetActiveSession(
 		authClient as MultiSessionAuthClient,
 	);
-	const { data: session, isPending: sessionPending } = useSession(authClient);
+	const hasInitialSession = initialSession !== undefined;
+	const { data: queriedSession, isPending: sessionQueryPending } =
+		useSession(authClient);
+	const session = queriedSession ?? initialSession ?? null;
+	const sessionPending = sessionQueryPending && !hasInitialSession;
 
 	const userLinks = links?.flatMap((link, index) => {
 		if (!isValidElement(link)) {
@@ -148,7 +157,11 @@ export function UserButton({
 				}
 			>
 				{size === "icon" ? (
-					<UserAvatar />
+					<UserAvatar
+						user={session?.user}
+						isPending={sessionPending || settingActiveSession}
+						sessionLookup={false}
+					/>
 				) : (
 					<>
 						{session || sessionPending || settingActiveSession ? (

@@ -7,6 +7,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 import { deleteUserPlugin } from "@/lib/auth/delete-user-plugin";
+import { magicLinkPlugin } from "@/lib/auth/magic-link-plugin";
+import { passkeyPlugin } from "@/lib/auth/passkey-plugin";
 import { authClient } from "@/lib/auth-client";
 import { getQueryClient } from "@/lib/query-client";
 import { AuthProvider } from "./auth/auth-provider";
@@ -32,7 +34,7 @@ export function Providers({
 				navigate={({ to, replace }) =>
 					replace ? router.replace(to) : router.push(to)
 				}
-				plugins={[deleteUserPlugin()]}
+				plugins={[deleteUserPlugin(), magicLinkPlugin(), passkeyPlugin()]}
 				Link={Link}
 			>
 				{children}

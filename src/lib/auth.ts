@@ -1,5 +1,6 @@
+import { passkey } from "@better-auth/passkey";
 import { betterAuth } from "better-auth";
-import { multiSession } from "better-auth/plugins";
+import { magicLink, multiSession } from "better-auth/plugins";
 
 import env from "../../env.config";
 import { getAuthDatabaseAdapter } from "../composition/auth-database-container";
@@ -12,7 +13,15 @@ export const auth = betterAuth({
 		enabled: true,
 	},
 	secret: env.BETTER_AUTH_SECRET,
-	plugins: [multiSession()],
+	plugins: [
+		multiSession(),
+		magicLink({
+			sendMagicLink: async ({ email, url }) => {
+				console.info(`Magic link for ${email}: ${url}`);
+			},
+		}),
+		passkey(),
+	],
 	user: {
 		deleteUser: {
 			enabled: true,

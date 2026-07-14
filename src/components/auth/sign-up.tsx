@@ -10,11 +10,10 @@ import {
 	useSignUpEmail,
 } from "@better-auth-ui/react";
 import { useIsMutating } from "@tanstack/react-query";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, LockKeyhole, ShieldCheck, UserRound } from "lucide-react";
 import { type SyntheticEvent, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
 	Field,
 	FieldDescription,
@@ -31,6 +30,7 @@ import {
 } from "@/components/ui/input-group";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
+import { Logo } from "@/components/logo";
 import { cn } from "@/lib/utils";
 import { AdditionalField } from "./additional-field";
 import { ProviderButtons, type SocialLayout } from "./provider-buttons";
@@ -55,11 +55,7 @@ export type SignUpProps = {
  * @param socialPosition - Social position to apply to the component
  * @returns The sign-up form React element.
  */
-export function SignUp({
-	className,
-	socialLayout,
-	socialPosition = "bottom",
-}: SignUpProps) {
+export function SignUp({ className, socialLayout }: SignUpProps) {
 	const {
 		additionalFields,
 		authClient,
@@ -118,6 +114,7 @@ export function SignUp({
 
 	const [fieldErrors, setFieldErrors] = useState<{
 		name?: string;
+		lastName?: string;
 		email?: string;
 		password?: string;
 		confirmPassword?: string;
@@ -128,7 +125,13 @@ export function SignUp({
 
 		const formData = new FormData(e.currentTarget);
 		// `emailAndPassword.name === false` hides the name field and submits "".
-		const name = (formData.get("name") as string | null) ?? "";
+		const firstName =
+			(formData.get("firstName") as string | null)?.trim() ?? "";
+		const lastName = (formData.get("lastName") as string | null)?.trim() ?? "";
+		const name =
+			emailAndPassword?.name === false
+				? ""
+				: [firstName, lastName].filter(Boolean).join(" ");
 		const email = formData.get("email") as string;
 
 		if (emailAndPassword?.confirmPassword && password !== confirmPassword) {
@@ -174,63 +177,112 @@ export function SignUp({
 		emailAndPassword?.enabled && socialProviders && socialProviders.length > 0;
 
 	return (
-		<Card className={cn("w-full max-w-sm", className)}>
-			<CardHeader>
-				<CardTitle className="text-xl font-semibold">
-					{localization.auth.signUp}
-				</CardTitle>
-			</CardHeader>
+		<main
+			className={cn(
+				"mx-auto flex min-h-0 w-full max-w-screen-sm flex-col md:max-w-screen-lg md:flex-row",
+				className,
+			)}
+		>
+			<section className="flex flex-col justify-center p-6 pb-4 md:w-1/2 md:p-8">
+				<Logo className="mb-6 h-9" />
 
-			<CardContent>
-				<div className="flex flex-col gap-6">
-					{socialPosition === "top" && (
-						<>
-							{socialProviders && socialProviders.length > 0 && (
-								<ProviderButtons socialLayout={socialLayout} />
-							)}
+				<h1 className="mb-4 max-w-md text-2xl font-semibold leading-tight tracking-normal md:text-3xl">
+					Start your free trial
+				</h1>
 
-							{showSeparator && (
-								<FieldSeparator className="*:data-[slot=field-separator-content]:bg-card text-xs flex items-center">
-									{localization.auth.or}
-								</FieldSeparator>
-							)}
-						</>
-					)}
+				<p className="mb-0 max-w-md text-muted-foreground leading-7 md:mb-8">
+					Create your account and unlock the workspace tools built to keep your
+					team moving.
+				</p>
 
+				<div className="hidden space-y-6 md:block">
+					<FeatureItem
+						icon={<UserRound />}
+						title="Seamless onboarding"
+						description="Start with a focused setup flow that keeps the path clear from the first step."
+					/>
+					<FeatureItem
+						icon={<ShieldCheck />}
+						title="Built-in confidence"
+						description="Account flows stay predictable, validated, and easy to recover from when something needs attention."
+					/>
+					<FeatureItem
+						icon={<LockKeyhole />}
+						title="Secure by default"
+						description="Password and provider sign-up stay inside the same trusted, auditable auth surface."
+					/>
+				</div>
+			</section>
+
+			<section className="flex items-center justify-center p-6 pt-0 md:w-1/2 md:p-8">
+				<div className="flex w-full flex-col gap-y-4 md:max-w-lg md:rounded-2xl md:border md:bg-card md:p-8 md:shadow-xs/5">
 					{emailAndPassword?.enabled && (
 						<form onSubmit={handleSubmit}>
-							<FieldGroup>
+							<FieldGroup className="gap-4">
 								{emailAndPassword.name !== false && (
-									<Field data-invalid={!!fieldErrors.name}>
-										<Label htmlFor="name">{localization.auth.name}</Label>
+									<div className="grid gap-4 sm:grid-cols-2">
+										<Field data-invalid={!!fieldErrors.name}>
+											<Label htmlFor="firstName">First name</Label>
 
-										<Input
-											id="name"
-											name="name"
-											type="text"
-											autoComplete="name"
-											placeholder={localization.auth.namePlaceholder}
-											required
-											disabled={isPending}
-											onChange={() => {
-												setFieldErrors((prev) => ({
-													...prev,
-													name: undefined,
-												}));
-											}}
-											onInvalid={(e) => {
-												e.preventDefault();
+											<Input
+												id="firstName"
+												name="firstName"
+												type="text"
+												autoComplete="given-name"
+												placeholder="First name"
+												required
+												disabled={isPending}
+												onChange={() => {
+													setFieldErrors((prev) => ({
+														...prev,
+														name: undefined,
+													}));
+												}}
+												onInvalid={(e) => {
+													e.preventDefault();
 
-												setFieldErrors((prev) => ({
-													...prev,
-													name: localization.auth.fieldRequired,
-												}));
-											}}
-											aria-invalid={!!fieldErrors.name}
-										/>
+													setFieldErrors((prev) => ({
+														...prev,
+														name: localization.auth.fieldRequired,
+													}));
+												}}
+												aria-invalid={!!fieldErrors.name}
+											/>
 
-										<FieldError>{fieldErrors.name}</FieldError>
-									</Field>
+											<FieldError>{fieldErrors.name}</FieldError>
+										</Field>
+
+										<Field data-invalid={!!fieldErrors.lastName}>
+											<Label htmlFor="lastName">Last name</Label>
+
+											<Input
+												id="lastName"
+												name="lastName"
+												type="text"
+												autoComplete="family-name"
+												placeholder="Last name"
+												required
+												disabled={isPending}
+												onChange={() => {
+													setFieldErrors((prev) => ({
+														...prev,
+														lastName: undefined,
+													}));
+												}}
+												onInvalid={(e) => {
+													e.preventDefault();
+
+													setFieldErrors((prev) => ({
+														...prev,
+														lastName: localization.auth.fieldRequired,
+													}));
+												}}
+												aria-invalid={!!fieldErrors.lastName}
+											/>
+
+											<FieldError>{fieldErrors.lastName}</FieldError>
+										</Field>
+									</div>
 								)}
 
 								<Field data-invalid={!!fieldErrors.email}>
@@ -241,7 +293,7 @@ export function SignUp({
 										name="email"
 										type="email"
 										autoComplete="email"
-										placeholder={localization.auth.emailPlaceholder}
+										placeholder="Email"
 										required
 										disabled={isPending}
 										onChange={() => {
@@ -297,7 +349,7 @@ export function SignUp({
 													password: undefined,
 												}));
 											}}
-											placeholder={localization.auth.passwordPlaceholder}
+											placeholder="Password"
 											required
 											minLength={emailAndPassword?.minPasswordLength}
 											maxLength={emailAndPassword?.maxPasswordLength}
@@ -348,6 +400,10 @@ export function SignUp({
 										</InputGroupAddon>
 									</InputGroup>
 
+									<FieldDescription>
+										Minimum {emailAndPassword?.minPasswordLength ?? 8}{" "}
+										characters.
+									</FieldDescription>
 									<FieldError>{fieldErrors.password}</FieldError>
 								</Field>
 
@@ -372,9 +428,7 @@ export function SignUp({
 														confirmPassword: undefined,
 													}));
 												}}
-												placeholder={
-													localization.auth.confirmPasswordPlaceholder
-												}
+												placeholder="Password"
 												required
 												minLength={emailAndPassword?.minPasswordLength}
 												maxLength={emailAndPassword?.maxPasswordLength}
@@ -448,55 +502,70 @@ export function SignUp({
 									<div className="flex justify-center">{Captcha}</div>
 								)}
 
-								<div className="flex flex-col gap-3">
-									<Button type="submit" disabled={isPending}>
-										{signUpEmailPending && <Spinner />}
+								<Button
+									type="submit"
+									disabled={isPending}
+									className="h-10 w-full active:scale-[0.985]"
+								>
+									{signUpEmailPending && <Spinner />}
+									{localization.auth.signUp}
+								</Button>
 
-										{localization.auth.signUp}
-									</Button>
-
-									{plugins.flatMap((plugin) =>
-										(plugin.authButtons ?? []).map((AuthButton, index) => (
-											<AuthButton
-												key={`${plugin.id}-${index.toString()}`}
-												view="signUp"
-											/>
-										)),
-									)}
-								</div>
+								{plugins.flatMap((plugin) =>
+									(plugin.authButtons ?? []).map((AuthButton, index) => (
+										<AuthButton
+											key={`${plugin.id}-${index.toString()}`}
+											view="signUp"
+										/>
+									)),
+								)}
 							</FieldGroup>
 						</form>
 					)}
 
-					{socialPosition === "bottom" && (
-						<>
-							{showSeparator && (
-								<FieldSeparator className="*:data-[slot=field-separator-content]:bg-card text-xs flex items-center">
-									{localization.auth.or}
-								</FieldSeparator>
-							)}
-
-							{socialProviders && socialProviders.length > 0 && (
-								<ProviderButtons socialLayout={socialLayout} />
-							)}
-						</>
-					)}
-				</div>
-
-				{emailAndPassword?.enabled && (
-					<div className="flex flex-col gap-3 items-center w-full mt-4">
-						<FieldDescription className="text-center">
+					{emailAndPassword?.enabled && (
+						<FieldDescription className="text-center text-sm">
 							{localization.auth.alreadyHaveAnAccount}{" "}
 							<Link
 								href={`${basePaths.auth}/${viewPaths.auth.signIn}`}
-								className="underline underline-offset-4"
+								className="font-medium text-primary underline underline-offset-4"
 							>
 								{localization.auth.signIn}
 							</Link>
 						</FieldDescription>
-					</div>
-				)}
-			</CardContent>
-		</Card>
+					)}
+
+					{showSeparator && (
+						<FieldSeparator className="*:data-[slot=field-separator-content]:bg-background my-1 text-xs uppercase md:*:data-[slot=field-separator-content]:bg-card">
+							{localization.auth.or}
+						</FieldSeparator>
+					)}
+
+					{socialProviders && socialProviders.length > 0 && (
+						<ProviderButtons socialLayout={socialLayout ?? "grid"} />
+					)}
+				</div>
+			</section>
+		</main>
+	);
+}
+
+function FeatureItem({
+	description,
+	icon,
+	title,
+}: {
+	description: string;
+	icon: React.ReactNode;
+	title: string;
+}) {
+	return (
+		<div className="flex items-start gap-4">
+			<div className="mt-0.5 text-foreground [&_svg]:size-6">{icon}</div>
+			<div>
+				<h3 className="mb-2 font-semibold leading-none">{title}</h3>
+				<p className="text-muted-foreground text-sm leading-6">{description}</p>
+			</div>
+		</div>
 	);
 }

@@ -10,7 +10,14 @@ import { useIsMutating } from "@tanstack/react-query";
 import { type SyntheticEvent, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
 	Field,
@@ -22,6 +29,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
+import { Logo } from "@/components/logo";
 import { cn } from "@/lib/utils";
 import { ProviderButtons, type SocialLayout } from "./provider-buttons";
 
@@ -114,200 +122,217 @@ export function SignIn({
 
 	const showSeparator =
 		emailAndPassword?.enabled && socialProviders && socialProviders.length > 0;
+	const hasSocialProviders = Boolean(socialProviders?.length);
 
 	return (
-		<Card className={cn("w-full max-w-sm", className)}>
-			<CardHeader>
-				<CardTitle className="text-xl font-semibold">
-					{localization.auth.signIn}
-				</CardTitle>
-			</CardHeader>
+		<div
+			className={cn(
+				"flex h-full w-full flex-col md:h-auto md:max-w-[440px] md:px-4 md:py-6",
+				className,
+			)}
+		>
+			<Card className="min-h-full overflow-hidden rounded-none border-x-0 border-y-0 pb-0 shadow-none md:min-h-0 md:rounded-2xl md:border md:shadow-xs/5">
+				<CardHeader className="justify-items-center gap-2 px-6 pb-5 pt-10 text-center md:pt-9">
+					<Logo className="mb-5 h-9" />
 
-			<CardContent>
-				<div className="flex flex-col gap-6">
-					{socialPosition === "top" && (
-						<>
-							{socialProviders && socialProviders.length > 0 && (
-								<ProviderButtons socialLayout={socialLayout} />
+					<CardTitle className="text-[2rem] font-semibold leading-none tracking-normal md:text-[2.125rem]">
+						{localization.auth.signIn}
+					</CardTitle>
+
+					<CardDescription className="max-w-[21rem] text-balance text-base leading-6">
+						Welcome back. Please sign in to continue.
+					</CardDescription>
+				</CardHeader>
+
+				<CardContent className="px-6 pb-6 pt-0 md:px-7">
+					<div className="flex flex-col gap-5">
+						{(socialPosition === "top" || socialPosition === "bottom") &&
+							hasSocialProviders && (
+								<ProviderButtons socialLayout={socialLayout ?? "grid"} />
 							)}
 
-							{showSeparator && (
-								<FieldSeparator className="*:data-[slot=field-separator-content]:bg-card m-0 text-xs flex items-center">
-									{localization.auth.or}
-								</FieldSeparator>
-							)}
-						</>
-					)}
+						{showSeparator && (
+							<FieldSeparator className="*:data-[slot=field-separator-content]:bg-card my-1 text-xs uppercase">
+								{localization.auth.or}
+							</FieldSeparator>
+						)}
 
-					{emailAndPassword?.enabled && (
-						<form onSubmit={handleSubmit}>
-							<FieldGroup>
-								<Field data-invalid={!!fieldErrors.email}>
-									<Label htmlFor="email">{localization.auth.email}</Label>
+						{emailAndPassword?.enabled && (
+							<form onSubmit={handleSubmit}>
+								<FieldGroup className="gap-4">
+									<Field data-invalid={!!fieldErrors.email}>
+										<Label htmlFor="email">{localization.auth.email}</Label>
 
-									<Input
-										id="email"
-										name="email"
-										type="email"
-										autoComplete="email"
-										placeholder={localization.auth.emailPlaceholder}
-										required
-										disabled={isPending}
-										onChange={() => {
-											setFieldErrors((prev) => ({
-												...prev,
-												email: undefined,
-											}));
-										}}
-										onInvalid={(e) => {
-											e.preventDefault();
-											const el = e.target as HTMLInputElement;
-											const msg = el.validity.valueMissing
-												? localization.auth.fieldRequired
-												: localization.auth.invalidEmail;
+										<Input
+											id="email"
+											name="email"
+											type="email"
+											autoComplete="email"
+											placeholder="Email"
+											required
+											disabled={isPending}
+											onChange={() => {
+												setFieldErrors((prev) => ({
+													...prev,
+													email: undefined,
+												}));
+											}}
+											onInvalid={(e) => {
+												e.preventDefault();
+												const el = e.target as HTMLInputElement;
+												const msg = el.validity.valueMissing
+													? localization.auth.fieldRequired
+													: localization.auth.invalidEmail;
 
-											setFieldErrors((prev) => ({
-												...prev,
-												email: msg,
-											}));
-										}}
-										aria-invalid={!!fieldErrors.email}
-									/>
+												setFieldErrors((prev) => ({
+													...prev,
+													email: msg,
+												}));
+											}}
+											aria-invalid={!!fieldErrors.email}
+										/>
 
-									<FieldError>{fieldErrors.email}</FieldError>
-								</Field>
-
-								<Field data-invalid={!!fieldErrors.password}>
-									<Label htmlFor="password">{localization.auth.password}</Label>
-
-									<Input
-										id="password"
-										name="password"
-										type="password"
-										autoComplete="current-password"
-										value={password}
-										onChange={(e) => {
-											setPassword(e.target.value);
-
-											setFieldErrors((prev) => ({
-												...prev,
-												password: undefined,
-											}));
-										}}
-										placeholder={localization.auth.passwordPlaceholder}
-										required
-										minLength={emailAndPassword?.minPasswordLength}
-										maxLength={emailAndPassword?.maxPasswordLength}
-										disabled={isPending}
-										onInvalid={(e) => {
-											e.preventDefault();
-											const el = e.target as HTMLInputElement;
-											const min = emailAndPassword?.minPasswordLength;
-											const max = emailAndPassword?.maxPasswordLength;
-											const msg = el.validity.valueMissing
-												? localization.auth.fieldRequired
-												: el.validity.tooShort
-													? localization.auth.tooShort.replace(
-															"{{min}}",
-															String(min),
-														)
-													: localization.auth.tooLong.replace(
-															"{{max}}",
-															String(max),
-														);
-
-											setFieldErrors((prev) => ({
-												...prev,
-												password: msg,
-											}));
-										}}
-										aria-invalid={!!fieldErrors.password}
-									/>
-
-									<FieldError>{fieldErrors.password}</FieldError>
-								</Field>
-
-								{emailAndPassword.rememberMe && (
-									<Field className="my-1">
-										<div className="flex items-center gap-3">
-											<Checkbox
-												id="rememberMe"
-												name="rememberMe"
-												disabled={isPending}
-											/>
-
-											<Label
-												htmlFor="rememberMe"
-												className="cursor-pointer text-sm font-normal"
-											>
-												{localization.auth.rememberMe}
-											</Label>
-										</div>
+										<FieldError>{fieldErrors.email}</FieldError>
 									</Field>
-								)}
 
-								{Captcha && (
-									<div className="flex justify-center">{Captcha}</div>
-								)}
+									<Field data-invalid={!!fieldErrors.password}>
+										<div className="flex items-center justify-between gap-3">
+											<Label htmlFor="password">
+												{localization.auth.password}
+											</Label>
 
-								<div className="flex flex-col gap-3">
-									<Button type="submit" disabled={isPending}>
-										{signInEmailPending && <Spinner />}
+											{emailAndPassword.forgotPassword && (
+												<Link
+													href={`${basePaths.auth}/${viewPaths.auth.forgotPassword}`}
+													className="text-muted-foreground text-xs underline-offset-4 transition-colors hover:text-foreground hover:underline"
+												>
+													{localization.auth.forgotPasswordLink}
+												</Link>
+											)}
+										</div>
 
-										{localization.auth.signIn}
-									</Button>
+										<Input
+											id="password"
+											name="password"
+											type="password"
+											autoComplete="current-password"
+											value={password}
+											onChange={(e) => {
+												setPassword(e.target.value);
 
-									{plugins.flatMap((plugin) =>
-										(plugin.authButtons ?? []).map((AuthButton, index) => (
-											<AuthButton
-												key={`${plugin.id}-${index.toString()}`}
-												view="signIn"
-											/>
-										)),
+												setFieldErrors((prev) => ({
+													...prev,
+													password: undefined,
+												}));
+											}}
+											placeholder="Password"
+											required
+											minLength={emailAndPassword?.minPasswordLength}
+											maxLength={emailAndPassword?.maxPasswordLength}
+											disabled={isPending}
+											onInvalid={(e) => {
+												e.preventDefault();
+												const el = e.target as HTMLInputElement;
+												const min = emailAndPassword?.minPasswordLength;
+												const max = emailAndPassword?.maxPasswordLength;
+												const msg = el.validity.valueMissing
+													? localization.auth.fieldRequired
+													: el.validity.tooShort
+														? localization.auth.tooShort.replace(
+																"{{min}}",
+																String(min),
+															)
+														: localization.auth.tooLong.replace(
+																"{{max}}",
+																String(max),
+															);
+
+												setFieldErrors((prev) => ({
+													...prev,
+													password: msg,
+												}));
+											}}
+											aria-invalid={!!fieldErrors.password}
+										/>
+
+										<FieldError>{fieldErrors.password}</FieldError>
+									</Field>
+
+									{emailAndPassword.rememberMe && (
+										<Field className="my-1">
+											<div className="flex items-center gap-3">
+												<Checkbox
+													id="rememberMe"
+													name="rememberMe"
+													disabled={isPending}
+												/>
+
+												<Label
+													htmlFor="rememberMe"
+													className="cursor-pointer text-sm font-normal"
+												>
+													{localization.auth.rememberMe}
+												</Label>
+											</div>
+										</Field>
 									)}
-								</div>
-							</FieldGroup>
-						</form>
-					)}
 
-					{socialPosition === "bottom" && (
-						<>
-							{showSeparator && (
-								<FieldSeparator className="*:data-[slot=field-separator-content]:bg-card text-xs flex items-center">
-									{localization.auth.or}
-								</FieldSeparator>
-							)}
+									{Captcha && (
+										<div className="flex justify-center">{Captcha}</div>
+									)}
 
-							{socialProviders && socialProviders.length > 0 && (
-								<ProviderButtons socialLayout={socialLayout} />
-							)}
-						</>
-					)}
-				</div>
+									<div className="flex flex-col gap-3 pt-1">
+										<Button
+											type="submit"
+											disabled={isPending}
+											className="h-10 w-full active:scale-[0.985]"
+										>
+											{signInEmailPending && <Spinner />}
 
-				<div className="flex flex-col gap-3 items-center w-full mt-4">
-					{emailAndPassword?.enabled && emailAndPassword?.forgotPassword && (
-						<Link
-							href={`${basePaths.auth}/${viewPaths.auth.forgotPassword}`}
-							className="self-center text-sm underline-offset-4 hover:underline"
-						>
-							{localization.auth.forgotPasswordLink}
-						</Link>
-					)}
+											{localization.auth.signIn}
+										</Button>
 
-					{emailAndPassword?.enabled && (
-						<FieldDescription className="text-center">
+										{plugins.flatMap((plugin) =>
+											(plugin.authButtons ?? []).map((AuthButton, index) => (
+												<AuthButton
+													key={`${plugin.id}-${index.toString()}`}
+													view="signIn"
+												/>
+											)),
+										)}
+									</div>
+								</FieldGroup>
+							</form>
+						)}
+					</div>
+				</CardContent>
+
+				{emailAndPassword?.enabled && (
+					<CardFooter className="mt-auto justify-center rounded-none border-t px-6 py-6 md:rounded-b-2xl md:bg-muted/72">
+						<FieldDescription className="text-center text-base leading-6 md:text-sm">
 							{localization.auth.needToCreateAnAccount}{" "}
 							<Link
 								href={`${basePaths.auth}/${viewPaths.auth.signUp}`}
-								className="underline underline-offset-4"
+								className="font-medium text-foreground underline underline-offset-4"
 							>
 								{localization.auth.signUp}
 							</Link>
 						</FieldDescription>
-					)}
+					</CardFooter>
+				)}
+			</Card>
+
+			<div className="hidden w-full flex-col gap-y-4 px-px py-6 text-center text-muted-foreground text-sm md:flex md:flex-row md:justify-between">
+				<div>© 2026</div>
+				<div className="space-x-4">
+					<a className="underline underline-offset-4" href="/terms">
+						Terms
+					</a>
+					<a className="underline underline-offset-4" href="/privacy">
+						Privacy
+					</a>
 				</div>
-			</CardContent>
-		</Card>
+			</div>
+		</div>
 	);
 }

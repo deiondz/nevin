@@ -4,9 +4,9 @@ import type { ReactNode } from "react";
 
 import "@/styles/app.css";
 
-import { ThemeProvider } from "next-themes";
 import { Header } from "@/components/header";
 import { Providers } from "@/components/providers";
+import { ThemeProvider } from "@/components/theme-provider";
 import { getEnabledSocialProviderIds } from "@/lib/auth-social-providers";
 import { cn } from "@/lib/utils";
 
@@ -40,11 +40,7 @@ export default function RootLayout({
 					enableSystem
 					disableTransitionOnChange
 				>
-					<Providers socialProviders={socialProviders}>
-						<Header />
-
-						{children}
-					</Providers>
+					<Providers socialProviders={socialProviders}>{children}</Providers>
 				</ThemeProvider>
 			</body>
 		</html>

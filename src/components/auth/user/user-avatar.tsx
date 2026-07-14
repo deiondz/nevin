@@ -17,6 +17,7 @@ export type UserAvatarProps = {
 	className?: string;
 	fallback?: ReactNode;
 	isPending?: boolean;
+	sessionLookup?: boolean;
 	/** @remarks `User` */
 	user?: User & { username?: string | null; displayUsername?: string | null };
 };
@@ -36,15 +37,16 @@ export function UserAvatar({
 	className,
 	user,
 	isPending,
+	sessionLookup = true,
 	fallback,
 }: UserAvatarProps) {
 	const { authClient } = useAuth();
 	const { data: session, isPending: sessionPending } = useSession(
 		authClient as UsernameAuthClient,
-		{ enabled: !user && !isPending },
+		{ enabled: sessionLookup && !user && !isPending },
 	);
 
-	if ((isPending || sessionPending) && !user) {
+	if ((isPending || (sessionLookup && sessionPending)) && !user) {
 		return <Skeleton className={cn("size-8 rounded-full", className)} />;
 	}
 

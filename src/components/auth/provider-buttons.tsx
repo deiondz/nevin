@@ -1,7 +1,6 @@
 "use client";
 
 import { useAuth } from "@better-auth-ui/react";
-import { useMemo } from "react";
 
 import { cn } from "@/lib/utils";
 import { ProviderButton } from "./provider-button";
@@ -11,6 +10,13 @@ export type ProviderButtonsProps = {
 };
 
 export type SocialLayout = "auto" | "horizontal" | "vertical" | "grid";
+
+type ResolvedSocialLayout =
+	| "single"
+	| "pair"
+	| "compact"
+	| "horizontal"
+	| "vertical";
 
 /**
  * Render sign-in buttons for configured social providers. Each button owns its own sign-in mutation
@@ -22,26 +28,32 @@ export function ProviderButtons({
 	socialLayout = "auto",
 }: ProviderButtonsProps) {
 	const { socialProviders } = useAuth();
+	const providerCount = socialProviders?.length ?? 0;
 
-	const resolvedSocialLayout = useMemo(() => {
-		if (socialLayout === "auto") {
-			if (socialProviders?.length && socialProviders.length >= 4) {
-				return "horizontal";
-			}
+	if (providerCount === 0) {
+		return null;
+	}
 
-			return "vertical";
-		}
-
-		return socialLayout;
-	}, [socialLayout, socialProviders?.length]);
+	const resolvedSocialLayout: ResolvedSocialLayout =
+		socialLayout === "horizontal"
+			? "horizontal"
+			: providerCount === 1
+				? "single"
+				: socialLayout === "vertical"
+					? "vertical"
+					: providerCount === 2
+						? "pair"
+						: "compact";
 
 	return (
 		<div
 			className={cn(
 				"gap-3",
-				resolvedSocialLayout === "grid" && "grid grid-cols-2",
-				resolvedSocialLayout === "vertical" && "flex flex-col",
+				resolvedSocialLayout === "single" && "grid grid-cols-1",
+				resolvedSocialLayout === "pair" && "grid grid-cols-2",
+				resolvedSocialLayout === "compact" && "grid grid-cols-3",
 				resolvedSocialLayout === "horizontal" && "flex flex-row flex-wrap",
+				resolvedSocialLayout === "vertical" && "flex flex-col",
 			)}
 		>
 			{socialProviders?.map((provider) => (
@@ -49,13 +61,18 @@ export function ProviderButtons({
 					key={provider}
 					provider={provider}
 					display={
-						resolvedSocialLayout === "vertical"
-							? "full"
-							: resolvedSocialLayout === "grid"
-								? "name"
-								: "icon"
+						resolvedSocialLayout === "compact" ||
+						resolvedSocialLayout === "horizontal"
+							? "icon"
+							: resolvedSocialLayout === "vertical"
+								? "full"
+								: "name"
 					}
-					className={cn(resolvedSocialLayout === "horizontal" && "flex-1")}
+					className={cn(
+						"h-10 active:scale-[0.985]",
+						resolvedSocialLayout === "horizontal" && "flex-1",
+						resolvedSocialLayout === "vertical" && "w-full",
+					)}
 				/>
 			))}
 		</div>
