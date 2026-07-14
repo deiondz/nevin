@@ -21,6 +21,38 @@ Use it when you want to start with the boring product plumbing in place: sign in
 - Biome for linting and formatting.
 - Envin-based environment validation in `env.config.ts`.
 
+## Todo
+
+### 1. Add Mail Provider Configuration
+
+- Add ZeptoMail environment variables:
+  - `ZEPTOMAIL_TOKEN`
+  - `ZEPTOMAIL_FROM_EMAIL`
+  - `ZEPTOMAIL_FROM_NAME`
+- Add a dedicated email service folder, for example `src/lib/email`.
+- Create a ZeptoMail client that sends transactional email through `https://api.zeptomail.com/v1.1/email`.
+- Keep ZeptoMail responsible for delivery only.
+- Verify the sending domain in ZeptoMail before using a production sender address.
+- Wire Better Auth email flows to the email service:
+  - email verification
+  - magic links
+  - password reset
+- Add a development fallback that logs email links when ZeptoMail is not configured.
+
+### 2. Add Email Template Configuration
+
+- Create reusable email template files under `src/lib/email/templates`.
+- Add templates for:
+  - verification email
+  - magic link
+  - password reset
+  - welcome email
+- Keep template rendering separate from the ZeptoMail transport client.
+- Define typed template props so each email has a clear data contract.
+- Add a shared base layout for brand name, footer, support email, and safe fallback text.
+- Add plain-text fallbacks for every HTML email.
+- Add a local preview or test helper for checking templates before sending.
+
 ## Tech Stack
 
 - Runtime and package manager: Bun 1.3.13
