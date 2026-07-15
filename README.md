@@ -14,6 +14,7 @@ Use it when you want to start with the boring product plumbing in place: sign in
 - Better Auth UI components in `src/components/auth`.
 - MongoDB auth adapter in `src/infrastructure/database/mongo/mongo-auth-database-adapter.ts`.
 - Mongoose database service behind a small application port.
+- Hexagonal mail port with ZeptoMail adapter and console fallback for local/dev.
 - Optional legacy Drizzle/Neon helper in `src/lib/db.ts`.
 - TanStack Query provider and devtools in `src/components/providers.tsx`.
 - Theme support through `src/components/theme-provider.tsx`.
@@ -21,37 +22,30 @@ Use it when you want to start with the boring product plumbing in place: sign in
 - Biome for linting and formatting.
 - Envin-based environment validation in `env.config.ts`.
 
-## Todo
+## Mail
 
-### 1. Add Mail Provider Configuration
+Transactional email is behind a hexagonal `MailService` port:
 
-- Add ZeptoMail environment variables:
-  - `ZEPTOMAIL_TOKEN`
-  - `ZEPTOMAIL_FROM_EMAIL`
-  - `ZEPTOMAIL_FROM_NAME`
-- Add a dedicated email service folder, for example `src/lib/email`.
-- Create a ZeptoMail client that sends transactional email through `https://api.zeptomail.com/v1.1/email`.
-- Keep ZeptoMail responsible for delivery only.
-- Verify the sending domain in ZeptoMail before using a production sender address.
-- Wire Better Auth email flows to the email service:
-  - email verification
-  - magic links
-  - password reset
-- Add a development fallback that logs email links when ZeptoMail is not configured.
+- Port: `src/application/ports/outbound/mail-service.ts`
+- ZeptoMail adapter: `src/infrastructure/mail/zeptomail/`
+- Console fallback: `src/infrastructure/mail/console/` (used when ZeptoMail env is missing)
+- Composition: `src/composition/mail-container.ts` — swap providers here
+- Better Auth UI templates: `src/infrastructure/mail/templates/auth-emails.tsx`
+- Auth wiring: verification, password reset, and magic link in `src/lib/auth.ts`
 
-### 2. Add Email Template Configuration
+Env vars (optional for local/dev; required for live send):
 
-- Create reusable email template files under `src/lib/email/templates`.
-- Add templates for:
-  - verification email
-  - magic link
-  - password reset
-  - welcome email
-- Keep template rendering separate from the ZeptoMail transport client.
-- Define typed template props so each email has a clear data contract.
-- Add a shared base layout for brand name, footer, support email, and safe fallback text.
-- Add plain-text fallbacks for every HTML email.
-- Add a local preview or test helper for checking templates before sending.
+- `ZEPTOMAIL_TOKEN`
+- `ZEPTOMAIL_FROM_EMAIL`
+- `ZEPTOMAIL_FROM_NAME` (default `Nevin`)
+- `APP_NAME` (default `Nevin`, used in email branding)
+
+Verify the sending domain in ZeptoMail before using a production sender address.
+
+### Todo (mail follow-ups)
+
+- Welcome / OTP / org-invite / password-changed templates (available in `@better-auth-ui/react/email`, not wired yet)
+- Local email preview / playground route
 
 ## Tech Stack
 
