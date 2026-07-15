@@ -24,9 +24,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Field, FieldError } from "@/components/ui/field";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
 import { deleteUserPlugin } from "@/lib/auth/delete-user-plugin";
 import { cn } from "@/lib/utils";
@@ -116,8 +115,10 @@ export function DeleteAccount({ className }: DeleteAccountProps) {
 					</AlertDialogTrigger>
 
 					<AlertDialogContent>
-						<form onSubmit={handleSubmit} className="flex flex-col gap-6">
-							<AlertDialogHeader>
+						<form onSubmit={handleSubmit} className="flex flex-col">
+							<AlertDialogHeader
+								className={needsPassword ? "pb-4 sm:pb-4" : undefined}
+							>
 								<AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
 									<TriangleAlert />
 								</AlertDialogMedia>
@@ -131,27 +132,32 @@ export function DeleteAccount({ className }: DeleteAccountProps) {
 								</AlertDialogDescription>
 							</AlertDialogHeader>
 
-							{needsPassword && (
-								<Field>
-									<Label htmlFor="delete-password">
-										{localization.auth.password}
-									</Label>
+							{needsPassword ? (
+								<div className="px-6 pb-6">
+									<Field className="w-full">
+										<FieldLabel
+											htmlFor="delete-password"
+											className="leading-normal"
+										>
+											{localization.auth.password}
+										</FieldLabel>
 
-									<Input
-										id="delete-password"
-										name="password"
-										type="password"
-										autoComplete="current-password"
-										placeholder={localization.auth.passwordPlaceholder}
-										value={password}
-										onChange={(e) => setPassword(e.target.value)}
-										disabled={isPending}
-										required
-									/>
+										<Input
+											id="delete-password"
+											name="password"
+											type="password"
+											autoComplete="current-password"
+											placeholder={localization.auth.passwordPlaceholder}
+											value={password}
+											onChange={(e) => setPassword(e.target.value)}
+											disabled={isPending}
+											required
+										/>
 
-									<FieldError />
-								</Field>
-							)}
+										<FieldError />
+									</Field>
+								</div>
+							) : null}
 
 							<AlertDialogFooter>
 								<AlertDialogCancel disabled={isPending}>
