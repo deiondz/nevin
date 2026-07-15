@@ -7,7 +7,7 @@ import {
 	useSetActiveSession,
 } from "@better-auth-ui/react";
 import {
-	CaretUpDown as ChevronsUpDown,
+	CaretUpDownIcon,
 	SignIn as LogIn,
 	SignOut as LogOut,
 	Gear as Settings,
@@ -151,7 +151,7 @@ export function UserButton({
 						? cn("rounded-full", className)
 						: cn(
 								buttonVariants({ variant, size: "lg" }),
-								"py-2.5 h-auto font-normal",
+								"h-auto py-3 font-normal sm:h-auto",
 								className,
 							)
 				}
@@ -176,7 +176,7 @@ export function UserButton({
 							</>
 						)}
 
-						<ChevronsUpDown className="ml-auto size-4" />
+						<CaretUpDownIcon className="ml-auto size-4" />
 					</>
 				)}
 			</DropdownMenuTrigger>

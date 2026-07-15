@@ -29,7 +29,7 @@ export function Providers({
 		<QueryClientProvider client={queryClient}>
 			<AuthProvider
 				authClient={authClient}
-				redirectTo="/settings/account"
+				redirectTo="/"
 				socialProviders={socialProviders}
 				navigate={({ to, replace }) =>
 					replace ? router.replace(to) : router.push(to)

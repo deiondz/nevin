@@ -4,7 +4,9 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 
+import { AppShell } from "@/components/app-shell/app-shell";
 import { Settings } from "@/components/auth/settings/settings";
+import { MaxWidthContainer } from "@/components/max-width-container";
 import { auth } from "@/lib/auth";
 import { getQueryClient } from "@/lib/query-client";
 
@@ -36,9 +38,16 @@ export default async function SettingsPage({
 
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
-			<div className="w-full max-w-3xl mx-auto p-4 md:p-6">
-				<Settings path={path} />
-			</div>
+			<AppShell
+				session={session}
+				breadcrumbPage={
+					path === viewPaths.settings.security ? "Security" : "Account"
+				}
+			>
+				<MaxWidthContainer size="narrow" className="md:py-6">
+					<Settings path={path} />
+				</MaxWidthContainer>
+			</AppShell>
 		</HydrationBoundary>
 	);
 }
